@@ -1322,6 +1322,21 @@ def is_eq(a):
     """
     return is_app_of(a, Z3_OP_EQ)
 
+def is_iff(a):
+    """Return `True` if `a` is a Z3 iff expression.
+
+    >>> x = Bool('x')
+    >>> y = Bool('y')
+    >>> ctx = _get_ctx(_ctx_from_ast_arg_list([x, y], None))
+    >>> s = BoolSort(ctx)
+    >>> x = s.cast(x)
+    >>> y = s.cast(y)
+    >>> f = BoolRef(Z3_mk_iff(ctx.ref(), x.as_ast(), y.as_ast()), ctx)
+    >>> is_iff(f)
+    True
+    """
+    return is_app_of(a, Z3_OP_IFF)
+
 def is_distinct(a):
     """Return `True` if `a` is a Z3 distinct expression.
     
@@ -1332,6 +1347,16 @@ def is_distinct(a):
     True
     """
     return is_app_of(a, Z3_OP_DISTINCT)
+
+def is_ite(a):
+    """Return `True` if `a` is a Z3 ITE/If expression.
+
+    >>> x = Bool('x')
+    >>> y, z = Ints('y z')
+    >>> is_ite(If(x, y, z))
+    True
+    """
+    return is_app_of(a, Z3_OP_ITE)
 
 def BoolSort(ctx=None):
     """Return the Boolean Z3 sort. If `ctx=None`, then the global context is used.
